@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useMemo } from 'react';
 import { useDrop } from 'react-dnd';
 import ReactFlow, {
   Background,
@@ -36,7 +36,7 @@ const PipelineCanvasInner: React.FC<PipelineCanvasProps> = ({
   onAddNode,
   onRemoveNode,
 }) => {
-  const dropRef = useRef<HTMLDivElement>(null);
+  const dropRef = useMemo(() => ({ current: null as HTMLDivElement | null }), []);
   const { project } = useReactFlow();
 
   const [{ isOver, canDrop }, drop] = useDrop({
@@ -67,8 +67,11 @@ const PipelineCanvasInner: React.FC<PipelineCanvasProps> = ({
     }),
   });
 
-  // Connect the drop target to the ref
-  drop(dropRef);
+  // Combine refs
+  const setRefs = useCallback((node: HTMLDivElement | null) => {
+    dropRef.current = node;
+    drop(node);
+  }, [drop]);
 
   const canvasClassName = `bg-gray-50 ${
     isOver && canDrop ? 'bg-blue-50 border-2 border-blue-300 border-dashed' : ''
@@ -84,7 +87,7 @@ const PipelineCanvasInner: React.FC<PipelineCanvasProps> = ({
   }));
 
   return (
-    <div ref={dropRef} className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden relative">
+    <div ref={setRefs} className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden relative">
       {isOver && canDrop && (
         <div className="absolute inset-0 bg-blue-100 bg-opacity-50 z-10 flex items-center justify-center">
           <div className="bg-white px-4 py-2 rounded-lg shadow-lg border-2 border-blue-300">

@@ -95,7 +95,7 @@ const DraggableStep: React.FC<DraggableStepProps> = ({ step, onAddNode }) => {
 
   return (
     <div
-      ref={drag}
+      ref={drag as any}
       className={`bg-white rounded-lg p-3 border-2 border-gray-200 cursor-grab hover:border-blue-300 hover:shadow-md transition-all ${
         isDragging ? 'opacity-50' : 'opacity-100'
       }`}
