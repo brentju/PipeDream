@@ -134,7 +134,7 @@ export async function detectStackFromGitHub(repoUrl: string): Promise<string> {
       // Check for specific files
       if (signature.files) {
         for (const file of signature.files) {
-          if (files.some(f => matchesPattern(f, file))) {
+          if (files.some((f: string) => matchesPattern(f, file))) {
             score += signature.priority;
           }
         }
@@ -143,7 +143,7 @@ export async function detectStackFromGitHub(repoUrl: string): Promise<string> {
       // Check for file extensions
       if (signature.extensions) {
         for (const ext of signature.extensions) {
-          if (files.some(f => f.endsWith(ext))) {
+          if (files.some((f: string) => f.endsWith(ext))) {
             score += signature.priority * 0.5;
           }
         }
@@ -234,7 +234,7 @@ export function detectStackFromFiles(files: string[]): string {
     // Check for specific files
     if (signature.files) {
       for (const file of signature.files) {
-        if (files.some(f => matchesPattern(f, file))) {
+        if (files.some((f: string) => matchesPattern(f, file))) {
           score += signature.priority;
         }
       }
@@ -243,7 +243,7 @@ export function detectStackFromFiles(files: string[]): string {
     // Check for file extensions
     if (signature.extensions) {
       for (const ext of signature.extensions) {
-        if (files.some(f => f.endsWith(ext))) {
+        if (files.some((f: string) => f.endsWith(ext))) {
           score += signature.priority * 0.5;
         }
       }
